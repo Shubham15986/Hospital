@@ -13,40 +13,55 @@ const doctorSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
-    ,speciality: {
-        type: String,
-        required: true,
     },
     image: {
-        type: String, default: ""
+        type: String,
+        default: ""
+    },
+    speciality: {
+        type: String,
+        default: ""
     },
     degree: {
         type: String,
-        required: true,
+        default: ""
+    },
+    experience: {
+        type: String,
+        default: ""
     },
     about: {
         type: String,
-        required: true,
-    }, available: {
+        default: ""
+    },
+    available: {
         type: Boolean,
-        required: true,
-    },fees: {
+        default: true
+    },
+    fees: {
         type: Number,
-        required: true,
-     
+        default: 0
+    },
+    address: {
+        type: Object,
+        default: {
+            line1: '',
+            line2: ''
+        }
     },
     date: {
         type: Number,
-        required: true,
-    }
-    ,slots_book: {
-        type:Object,
+        default: Date.now
+    },
+    slots_booked: {
+        type: Object,
         default: {},
+    },
+    refreshToken: {
+        type: String
     }
+}, { minimize: false })
 
-}, {minimize: false})
-
-const doctorModel = mongoose.models.doctor ||  mongoose.model('doctor', doctorSchema)
+const doctorModel = mongoose.models.doctor || mongoose.model('doctor', doctorSchema)
 
 export default doctorModel
