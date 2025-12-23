@@ -5,6 +5,8 @@ import connectDB from './config/mongodb.js'
 import connectCloudinary from './config/cloudinary.js'
 import authRoutes from './routes/authRoutes.js'
 import userRouter from './routes/userRoutes.js'
+import doctorAuthRoutes from './routes/doctorAuthRoutes.js'
+import doctorRouter from './routes/doctorRoutes.js'
 
 const app = express()
 dotenv.config()
@@ -18,6 +20,8 @@ connectCloudinary()
 
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRouter)
+app.use('/api/doctor', doctorAuthRoutes)
+app.use('/api/doctor', doctorRouter)
 
 app.get('/',(req,res)=>{
     res.send('API is  WORKING')
