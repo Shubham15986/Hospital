@@ -100,6 +100,65 @@ export const loginDoctor = async (req, res) => {
 }
 
 
+export const googleLogin = async (req, res) => {
+    try {
+        const { email, name } = req.body
+
+        let doctor = await DoctorModel.findOne({ email })
+
+        if (doctor) {
+            const { accessToken, refreshToken } = generateTokens(doctor._id)
+            doctor.refreshToken = refreshToken
+            await doctor.save()
+
+            res.status(200).json({
+                success: true,
+                message: 'Logged in with Google successfully',
+                accessToken,
+                refreshToken,
+                doctor: {
+                    id: doctor._id,
+                    name: doctor.name,
+                    email: doctor.email,
+                    speciality: doctor.speciality,
+                    degree: doctor.degree,
+                    available: doctor.available
+                }
+            })
+        } else {
+            doctor = new DoctorModel({
+                name,
+                email,
+                password: '' 
+            })
+            
+            const { accessToken, refreshToken } = generateTokens(doctor._id)
+            doctor.refreshToken = refreshToken
+            await doctor.save()
+
+            res.status(201).json({
+                success: true,
+                message: 'Registered with Google successfully',
+                accessToken,
+                refreshToken,
+                doctor: {
+                    id: doctor._id,
+                    name: doctor.name,
+                    email: doctor.email,
+                    speciality: doctor.speciality,
+                    degree: doctor.degree,
+                    available: doctor.available
+                }
+            })
+        }
+
+    } catch (error) {
+        console.error('Google Login error:', error)
+        res.status(500).json({ success: false, message: 'Server error', error: error.message })
+    }
+}
+
+
 export const refreshToken = async (req, res) => {
     try {
         const { refreshToken } = req.body
